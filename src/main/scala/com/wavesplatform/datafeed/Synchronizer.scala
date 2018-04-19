@@ -17,7 +17,7 @@ class Synchronizer(nodeApi: NodeApiWrapper, uetx: UnconfirmedETX, timeseries: Ti
 
   val mainnet: Boolean = {
     val req = nodeApi.get("/blocks/last")
-    if (req != JsNull && (req \ "generator").as[String].take(2)=="3P") true
+    if (req != JsNull && (req \ "generator").as[String].take(2)=="3J") true
     else false
   }
 
