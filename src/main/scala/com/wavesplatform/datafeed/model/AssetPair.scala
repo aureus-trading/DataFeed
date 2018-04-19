@@ -31,10 +31,10 @@ case class AssetPair(settings: WDFSettings, nodeApi: NodeApiWrapper, amountAsset
   val amountAssetIssueTx = nodeApi.get("/transactions/info/" + amountAsset)
   val priceAssetIssueTx = nodeApi.get("/transactions/info/" + priceAsset)
 
-  val amountAssetDecimals = if (amountAsset == "WAVES") 8 else (amountAssetIssueTx \ "decimals").as[Int]
-  val amountAssetName = if (amountAsset == "WAVES") "WAVES" else (amountAssetIssueTx \ "name").as[String]
-  val priceAssetDecimals = if (priceAsset == "WAVES") 8 else (priceAssetIssueTx \ "decimals").as[Int]
-  val priceAssetName = if (priceAsset == "WAVES") "WAVES" else (priceAssetIssueTx \ "name").as[String]
+  val amountAssetDecimals = if (amountAsset == "TN") 8 else (amountAssetIssueTx \ "decimals").as[Int]
+  val amountAssetName = if (amountAsset == "TN") "TN" else (amountAssetIssueTx \ "name").as[String]
+  val priceAssetDecimals = if (priceAsset == "TN") 8 else (priceAssetIssueTx \ "decimals").as[Int]
+  val priceAssetName = if (priceAsset == "TN") "TN" else (priceAssetIssueTx \ "name").as[String]
 
   val amountScale = Math.pow(10, amountAssetDecimals).toLong
   val priceScale = Math.pow(10, priceAssetDecimals).toLong
@@ -49,7 +49,7 @@ case class AssetPair(settings: WDFSettings, nodeApi: NodeApiWrapper, amountAsset
 
 
   def getAssetSupply(assetId: String): (Long, Long, Long) =
-    if (assetId == "WAVES") (1e8.toLong, 1e8.toLong, 1e8.toLong) else {
+    if (assetId == "TN") (1e8.toLong, 1e8.toLong, 1e8.toLong) else {
       val issueTx = nodeApi.get("/transactions/info/" + assetId)
       val assets = (nodeApi.get("/assets/balance/" + (issueTx \ "sender").as[String]) \ "balances").as[List[JsObject]]
       var supply = 0L

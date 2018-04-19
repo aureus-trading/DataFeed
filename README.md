@@ -1,5 +1,5 @@
-# Waves Data Feed
-Waves Data Feed (WDF) is a REST API and a WebSocket proxy for the Waves platform.
+# TN Data Feed
+TN Data Feed (WDF) is a REST API and a WebSocket proxy for the TN platform.
 The REST API provides real-time and historical market data in raw or OHLCV (candlestick) formats for unconfirmed and confirmed DEX transactions.
 The WebSocket proxy allows you to receive asynchronous notifications of blockchain events.
 

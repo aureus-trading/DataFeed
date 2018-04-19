@@ -38,7 +38,7 @@ case class ApiController(settings: WDFSettings, timeseries: TimeSeries, router: 
   val ErrorInvalidAddress = Json.obj("status" -> "error",
     "message" -> "Invalid address")
 
-  def getAssetId(a: String): String = if (a.toUpperCase=="WAVES") "WAVES" else if (a.length >= 2 && a.length <= 20) settings.symbols.getOrElse(a.toUpperCase, "") else a
+  def getAssetId(a: String): String = if (a.toUpperCase=="TN") "TN" else if (a.length >= 2 && a.length <= 20) settings.symbols.getOrElse(a.toUpperCase, "") else a
 
   def apiStatus: Future[JsObject] = {
       for {
