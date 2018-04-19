@@ -10,7 +10,7 @@ import scala.collection.mutable.Queue
 
 class Synchronizer(nodeApi: NodeApiWrapper, uetx: UnconfirmedETX, timeseries: TimeSeries, router: ActorRef, matchers: List[String]) extends Actor with Logging {
 
-  val FirstMainnetBlock = 435196
+  val FirstMainnetBlock = 0
   val FirstTestnetBlock = 171000
 
   val addresses = scala.collection.mutable.SortedSet[String]()
@@ -21,7 +21,7 @@ class Synchronizer(nodeApi: NodeApiWrapper, uetx: UnconfirmedETX, timeseries: Ti
     else false
   }
 
-  WavesAddress.chainId = if (mainnet) 'W'.toByte else 'T'.toByte
+  WavesAddress.chainId = if (mainnet) 'L'.toByte else 'T'.toByte
 
   private def rotate(nodes: List[String]): List[String] = nodes.drop(1) ++ nodes.take(1)
 
