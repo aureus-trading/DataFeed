@@ -4,10 +4,9 @@ import sbt.Keys._
 val appConf = ConfigFactory.parseFile(new File("src/main/resources/reference.conf")).resolve().getConfig("app")
 
 organization in ThisBuild := "com.wavesplatform"
-name := "wdf"
+name := "df"
 version := appConf.getString("version")
 scalaVersion := "2.12.1"
-
 libraryDependencies ++= Seq( "org.scala-lang" % "scala-swing" % "2.10+",
  "com.github.scopt" %% "scopt" % "3.5.0",
  "com.h2database" % "h2-mvstore" % "1.4.196",
@@ -28,5 +27,26 @@ libraryDependencies ++= Seq( "org.scala-lang" % "scala-swing" % "2.10+",
  "com.iheart" % "ficus_2.12" % "1.4.0",
  "org.scorexfoundation" %% "scrypto" % "1.2.0"
 )
-
+enablePlugins(DockerPlugin)
 assemblyJarName in assembly := s"${name.value}-${version.value}.jar"
+
+dockerfile in docker := {
+ val artifact: File = assembly.value
+ val artifactTargetPath = s"/app/${artifact.name}"
+
+ new Dockerfile {
+  from("openjdk:8-jre")
+  add(artifact, artifactTargetPath)
+  expose(6990)
+  entryPoint("java", "-jar", artifactTargetPath)
+ }
+}
+buildOptions in docker := BuildOptions(
+ cache = false,
+ removeIntermediateContainers = BuildOptions.Remove.Always,
+ pullBaseImage = BuildOptions.Pull.Always
+)
+// Set names for the image
+imageNames in docker := Seq(
+ ImageName(s"docker.turtlenetwork.eu/${name.value}:${version.value}")
+)

@@ -5,6 +5,8 @@ The WebSocket proxy allows you to receive asynchronous notifications of blockcha
 
 REST API runs by default on TCP port 6990, WebSocket proxy on TCP port 6991. REST API and WebSocket services can be enabled and configured by editing the WDF configuration file.
 
+##Building and pushing docker container
+sbt dockerBuildAndPush
 
 ## Getting Started
 
