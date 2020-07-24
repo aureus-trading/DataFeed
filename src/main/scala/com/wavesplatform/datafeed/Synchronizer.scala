@@ -21,7 +21,7 @@ class Synchronizer(nodeApi: NodeApiWrapper, uetx: UnconfirmedETX, timeseries: Ti
     else false
   }
 
-  WavesAddress.chainId = if (mainnet) 'L'.toByte else 'T'.toByte
+  WavesAddress.chainId = if (mainnet) 'L'.toByte else 'l'.toByte
 
   private def rotate(nodes: List[String]): List[String] = nodes.drop(1) ++ nodes.take(1)
 

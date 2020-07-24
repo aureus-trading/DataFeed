@@ -58,6 +58,8 @@ case class ApiController(settings: WDFSettings, timeseries: TimeSeries, router: 
 
   def apiPairsList: List[JsObject] = timeseries.markets
 
+  def apiBlockHeight: Int = timeseries.lastSyncedBlock
+
   def apiSymbolsList: List[JsObject] =
     settings.symbols.toSeq.sorted.map(s => Json.obj("symbol" -> s._1,
       "assetID" -> s._2)).toList

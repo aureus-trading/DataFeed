@@ -37,8 +37,9 @@ dockerfile in docker := {
  new Dockerfile {
   from("openjdk:8-jre")
   add(artifact, artifactTargetPath)
+  add(baseDirectory(_ / "wdf.conf").value, file("/wdf.conf"))
   expose(6990)
-  entryPoint("java", "-jar", artifactTargetPath)
+  entryPoint("java", "-jar", artifactTargetPath, "/wdf.conf")
  }
 }
 buildOptions in docker := BuildOptions(

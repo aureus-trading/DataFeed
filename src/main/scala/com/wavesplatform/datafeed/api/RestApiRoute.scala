@@ -29,13 +29,19 @@ case class RestApiRoute(settings: WDFSettings, apiController: ApiController) ext
 
 var route: Route =
 pathPrefix("datafeed") {
-  datafeedStatus ~ listPairs ~ listSymbols ~ ticker ~ tickers ~ tradesPeriod ~ tradesLimit ~ tradesByAddress ~ candlesRange ~ candlesLimit
+  datafeedStatus ~ blockheightStatus ~ listPairs ~ listSymbols ~ ticker ~ tickers ~ tradesPeriod ~ tradesLimit ~ tradesByAddress ~ candlesRange ~ candlesLimit
 }
 
   @Path("/status")
   @ApiOperation(value = "Datafeed Status", notes = "Get datafeed status", httpMethod = "GET")
   def datafeedStatus: Route = path("status") {
     complete(apiController.apiStatus)
+  }
+
+  @Path("/blockheight")
+  @ApiOperation(value ="Last synced block height", notes="Get last synced block", httpMethod="GET")
+  def blockheightStatus: Route = path("blockheight"){
+    complete(apiController.apiBlockHeight)
   }
 
   @Path("/symbols")
