@@ -20,7 +20,8 @@ case class WDFSettings(enable: Boolean,
                        restPort: Int,
                        websocketEnable: Boolean,
                        websocketAddress: String,
-                       websocketPort: Int
+                       websocketPort: Int,
+                       oracle: String
                       )
 
 object WDFSettings {
@@ -39,6 +40,7 @@ object WDFSettings {
     val websocketEnable = config.as[Boolean](s"$configPath.websocket-enable")
     val websocketAddress = config.as[String](s"$configPath.websocket-address")
     val websocketPort = config.as[Int](s"$configPath.websocket-port")
+    val oracle = config.as[String](s"$configPath.oracle")
 
     WDFSettings(enable,
       nodes,
@@ -49,6 +51,7 @@ object WDFSettings {
       restPort,
       websocketEnable,
       websocketAddress,
-      websocketPort)
+      websocketPort,
+      oracle)
   }
 }

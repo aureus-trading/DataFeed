@@ -65,12 +65,12 @@ object Application extends Logging {
     val nodeApi = NodeApiWrapper(settings)
 
     var symbolsNew = Map[String, String]()
-    val req = nodeApi.get("/addresses/data/3JwdMmF7xEack9y8SJ4VeQ4UX2qmu1jCoWa?matches=ticker_%3C.*")
+    val req = nodeApi.get("/addresses/data/"+settings.oracle+"?matches=ticker_%3C.*")
     if (req != JsNull) {
       req.as[List[JsObject]].foreach(asset => {
 
         val asset_id: String = (asset\ "key").as[String].replace("ticker_<","").replace(">","")
-        val status = nodeApi.get("/addresses/data/3JwdMmF7xEack9y8SJ4VeQ4UX2qmu1jCoWa?matches=status_<" + asset_id + ">")
+        val status = nodeApi.get("/addresses/data/"+settings.oracle+"?matches=status_<" + asset_id + ">")
         if (status != JsNull){
           val res = (status(0)\ "value").as[Int]
           if (res == 2){
