@@ -29,7 +29,7 @@ case class RestApiRoute(settings: WDFSettings, apiController: ApiController) ext
 
 var route: Route =
 pathPrefix("datafeed") {
-  datafeedStatus ~ blockheightStatus ~ listPairs ~ listSymbols ~ ticker ~ tickers ~ tradesPeriod ~ tradesLimit ~ tradesByAddress ~ candlesRange ~ candlesLimit
+  datafeedStatus ~ blockheightStatus ~ listPairs  ~ listPairsVerified ~ listSymbols ~ ticker ~ tickers ~ tradesPeriod ~ tradesLimit ~ tradesByAddress ~ candlesRange ~ candlesLimit
 }
 
   @Path("/status")
@@ -54,6 +54,12 @@ pathPrefix("datafeed") {
   @ApiOperation(value = "Available markets", notes = "List of all traded markets", httpMethod = "GET")
   def listPairs: Route = path("markets") {
     complete(apiController.apiPairsList)
+  }
+
+  @Path("/markets/verified")
+  @ApiOperation(value = "Available verified markets", notes = "List of all traded markets with symbol", httpMethod = "GET")
+  def listPairsVerified: Route = path("markets" / "verified") {
+    complete(apiController.apiPairsListVerified)
   }
 
   @Path("/ticker/{amountAsset}/{priceAsset}")

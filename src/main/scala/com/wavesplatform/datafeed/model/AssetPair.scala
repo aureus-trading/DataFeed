@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 
 import com.wavesplatform.datafeed.settings.WDFSettings
 
-case class AssetPair(settings: WDFSettings, nodeApi: NodeApiWrapper, amountAsset: String, priceAsset: String, DFDB: MVStoreDataFeedStorage, uetx: UnconfirmedETX) extends Logging {
+case class AssetPair(settings: WDFSettings, nodeApi: NodeApiWrapper, amountAsset: String, priceAsset: String, DFDB: MVStoreDataFeedStorage, uetx: UnconfirmedETX, symbols: Map[String,String]) extends Logging {
 
   val MaxTrades = 1000
   val MaxCandles = 1000
@@ -73,12 +73,12 @@ case class AssetPair(settings: WDFSettings, nodeApi: NodeApiWrapper, amountAsset
   val priceAssetMaxSupply = if (pMaxSupply == -1L) "infinite" else amountFormatter.format(pMaxSupply)
   val priceAssetCirculatingSupply = amountFormatter.format(pCSupply)
 
-  val amountSymbol = keyForValue(settings.symbols, amountAsset) match {
+  val amountSymbol = keyForValue(symbols, amountAsset) match {
     case Some(s) => s._1
     case None => ""
   }
 
-  val priceSymbol = keyForValue(settings.symbols, priceAsset) match {
+  val priceSymbol = keyForValue(symbols, priceAsset) match {
     case Some(s) => s._1
     case None => ""
   }
