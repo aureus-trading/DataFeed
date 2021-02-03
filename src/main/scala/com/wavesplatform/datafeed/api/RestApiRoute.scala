@@ -1,24 +1,21 @@
 package com.wavesplatform.datafeed.api
 
-import javax.ws.rs.Path
 
+import javax.ws.rs.Path
 import scala.concurrent.duration._
 import scala.language.postfixOps
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.server.{Directives, Route}
-import akka.http.scaladsl.model.HttpResponse
+import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 import akka.util.Timeout
-import com.wavesplatform.datafeed.model._
 import com.wavesplatform.datafeed.settings.WDFSettings
 import io.swagger.annotations._
-import play.api.libs.json._
 import play.api.libs.json.Reads
 
 import scala.concurrent._
-import ExecutionContext.Implicits.global
 
-@Path("/datafeed")
-@Api(value = "datafeed")
+@Path("/")
+@Api(value = "/")
 case class RestApiRoute(settings: WDFSettings, apiController: ApiController) extends Directives with ApiMarshallers {
   private implicit val timeout: Timeout = 5.seconds
 
@@ -27,10 +24,17 @@ case class RestApiRoute(settings: WDFSettings, apiController: ApiController) ext
     complete(f(a))
   }
 
-var route: Route =
-pathPrefix("datafeed") {
-  datafeedStatus ~ blockheightStatus ~ listPairs  ~ listPairsVerified ~ listSymbols ~ ticker ~ tickers ~ tradesPeriod ~ tradesLimit ~ tradesByAddress ~ candlesRange ~ candlesLimit
-}
+var route: Route = {
+  redirectPath ~ datafeedStatus ~ blockheightStatus ~ listPairs ~ listPairsVerified ~ listSymbols ~ ticker ~ tickers ~ tradesPeriod ~ tradesLimit ~ tradesByAddress ~ candlesRange ~ candlesLimit
+  }
+
+  def redirectPath: Route = pathPrefix("api" /){
+    extractUnmatchedPath {
+      remaining => {
+        redirect("/"+remaining.toString(), StatusCodes.PermanentRedirect)
+      }
+    }
+  }
 
   @Path("/status")
   @ApiOperation(value = "Datafeed Status", notes = "Get datafeed status", httpMethod = "GET")
