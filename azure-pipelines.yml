@@ -1,0 +1,48 @@
+# Docker
+# Build and push an image to Azure Container Registry
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+variables:
+  tag: '$(Build.BuildId)'
+
+resources:
+- repo: self
+
+stages:
+- stage: Build
+  displayName: BuildMarketDataAPIServices
+  jobs:  
+  - job: BuildMarketDataAPIServer
+    displayName: BuildMarketDataAPIServer
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          GIT_COMMIT=$(git rev-parse --short HEAD)
+          
+          echo "GIT_COMMIT: ${GIT_COMMIT}"
+          
+          #
+          # set env variable to allow next task to consume
+          #
+          echo "##vso[task.setvariable variable=GIT_COMMIT]${GIT_COMMIT}"
+
+          # bootstrap sbt
+          sbt assembly
+
+    - task: Docker@2
+      displayName: Build and push market-data-api image
+      inputs:
+        containerRegistry: 'polarity-acr'
+        repository: 'market-data-api'
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        tags: |
+          develop
+          $(GIT_COMMIT)
